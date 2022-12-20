@@ -23,4 +23,10 @@ jobs:
       - name: Build Image ZAP
         run: docker pull ictu/zap2docker-weekly
       - name: Run Docker Container ZAP
-        run: docker run --rm -v $(pwd):/zap/wrk/:rw -t ictu/zap2docker-weekly zap-baseline.py -I -j -t http://localhost:5050/ -r testreport.html --hook=/zap/auth_hook.py -z "auth.loginurl=http://localhost:5050/login auth.username="admin" auth.password="admin123""
+        run: |
+          docker run --rm -v /tmp:/zap/wrk -t ictu/zap2docker-weekly zap-baseline.py -I -j -t http://localhost:5050/ -r testreport.html --hook=/zap/auth_hook.py -z "auth.loginurl=http://localhost:5050/login auth.username="admin" auth.password="admin123""
+          echo "sukses"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: /tmp/testreport.html
